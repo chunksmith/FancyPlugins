@@ -19,6 +19,7 @@ dependencies {
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
     compileOnly("io.github.toxicity188:bettermodel-bukkit-api:3.2.0")
+    compileOnly("io.netty:netty-transport:4.2.17.Final")
 
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
