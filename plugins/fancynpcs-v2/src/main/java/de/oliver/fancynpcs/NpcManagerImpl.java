@@ -64,6 +64,7 @@ public class NpcManagerImpl implements NpcManager {
     @Override
     public void removeNpc(Npc npc) {
         npcs.remove(npc.getData().getId());
+        if (!npc.isSaveToFile()) return;
 
         YamlConfiguration npcConfig = YamlConfiguration.loadConfiguration(npcConfigFile);
         npcConfig.set("npcs." + npc.getData().getId(), null);
