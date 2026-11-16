@@ -42,6 +42,10 @@ public class CustomModelAttribute {
     }
 
     private static void setModel(Npc npc, String modelName) {
+        if (!Bukkit.isPrimaryThread()) {
+            Bukkit.getGlobalRegionScheduler().execute(FancyNpcsModelPlugin.get(), () -> setModel(npc, modelName));
+            return;
+        }
         Entity bukkitEntity = getBukkitEntity(npc);
         if (bukkitEntity == null) {
             return;
@@ -52,6 +56,7 @@ public class CustomModelAttribute {
                 .flatMap(registry -> registry.trackers().stream().filter(tracker -> tracker.name().equals(modelName)).findFirst());
         if (currentTracker.isPresent()) {
             currentTracker.get().scaler(ModelScaler.value(npc.getData().getScale()));
+            spawnForOnlinePlayers(currentTracker.get());
             return;
         }
 
@@ -98,10 +103,13 @@ public class CustomModelAttribute {
             npc.interact(player, ActionTrigger.LEFT_CLICK);
         });
 
+        spawnForOnlinePlayers(tracker);
+    }
+
+    private static void spawnForOnlinePlayers(EntityTracker tracker) {
         EntityTrackerRegistry registry = tracker.registry();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            registry.spawn(BukkitAdapter.adapt(player));
-        }
+        for (Player player : Bukkit.getOnlinePlayers())
+            registry.spawnIfNotSpawned(BukkitAdapter.adapt(player));
     }
 
     private static void applyRotation(Npc npc) {
