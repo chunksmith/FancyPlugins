@@ -48,6 +48,13 @@ public class CustomModelAttribute {
         }
         bukkitEntity.customName(Component.empty());
 
+        Optional<EntityTracker> currentTracker = BetterModel.registry(BukkitAdapter.adapt(bukkitEntity))
+                .flatMap(registry -> registry.trackers().stream().filter(tracker -> tracker.name().equals(modelName)).findFirst());
+        if (currentTracker.isPresent()) {
+            currentTracker.get().scaler(ModelScaler.value(npc.getData().getScale()));
+            return;
+        }
+
         // Close all existing trackers
         closeAllTrackers(bukkitEntity);
 

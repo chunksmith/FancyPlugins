@@ -8,7 +8,7 @@ import com.fancyinnovations.fancynpcsmodel.config.FancyNpcsModelConfigImpl;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.CustomModelAttribute;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationLoopAction;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationOnceAction;
-import com.fancyinnovations.fancynpcsmodel.listeners.ModelEntityDataGuard;
+import com.fancyinnovations.fancynpcsmodel.listeners.DisplayEntityDataGuard;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcInteractListener;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcRemoveListener;
 import com.fancyinnovations.fancynpcsmodel.metrics.FNMMetrics;
@@ -182,7 +182,7 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NpcInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new NpcRemoveListener(), this);
         try {
-            ModelEntityDataGuard entityDataGuard = new ModelEntityDataGuard();
+            DisplayEntityDataGuard entityDataGuard = new DisplayEntityDataGuard();
             Bukkit.getPluginManager().registerEvents(entityDataGuard, this);
             Bukkit.getOnlinePlayers().forEach(entityDataGuard::inject);
         } catch (ReflectiveOperationException exception) {
