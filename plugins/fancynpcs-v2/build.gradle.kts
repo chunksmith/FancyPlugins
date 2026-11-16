@@ -35,7 +35,6 @@ dependencies {
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_11"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_9"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_6"))
-    implementation(project(":plugins:fancynpcs-v2:implementation_1_21_5"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -63,7 +62,7 @@ dependencies {
     implementation("org.mineskin:java-client-jsoup:3.2.6")
 
     compileOnly("me.clip:placeholderapi:2.12.2")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.13")
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.6.0")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.4.5")
     compileOnly("net.citizensnpcs:citizens-main:2.0.42-SNAPSHOT") {
         exclude(group = "*", module = "*")
@@ -101,8 +100,8 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.4-snapshot-1")
-        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-1.build.1-alpha.jar"))
+        minecraftVersion("26.4-snapshot-8")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-8.build.1-alpha.jar"))
 
 
         downloadPlugins {
@@ -120,8 +119,10 @@ tasks {
     }
 
     shadowJar {
-        relocate("org.incendo", "de.oliver")
-        relocate("org.lushplugins.chatcolorhandler", "de.oliver.fancynpcs.libs.chatcolorhandler")
+        relocate("org.incendo.cloud", "com.fancyinnovations.fancynpcs.libs.cloud")
+        relocate("revxrsal.commands", "com.fancyinnovations.fancynpcs.libs.lamp")
+        relocate("org.lushplugins.chatcolorhandler", "com.fancyinnovations.fancynpcs.libs.chatcolorhandler")
+
         archiveClassifier.set("")
         archiveBaseName.set("FancyNpcs")
         dependsOn(":plugins:fancynpcs-v2:fn-v2-api:shadowJar")

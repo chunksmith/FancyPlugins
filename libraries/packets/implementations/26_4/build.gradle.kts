@@ -4,15 +4,15 @@ plugins {
 }
 
 dependencies {
-    paperweight.paperDevBundle("26.4-snapshot-1.build.1-alpha")
+    paperweight.paperDevBundle("26.4-snapshot-7.build.1-alpha")
 
     compileOnly(project(":libraries:packets:packets-api"))
 
     testImplementation(project(":libraries:packets"))
     testImplementation(project(":libraries:packets:packets-api"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.1.0")
-    testImplementation("org.junit.platform:junit-platform-console-standalone:6.1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.1.3")
+    testImplementation("org.junit.platform:junit-platform-console-standalone:6.1.3")
 }
 
 java {

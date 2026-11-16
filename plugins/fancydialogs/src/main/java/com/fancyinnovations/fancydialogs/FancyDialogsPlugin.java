@@ -99,7 +99,7 @@ public class FancyDialogsPlugin extends JavaPlugin implements FancyDialogs {
         fdConfig.load();
 
         if (!fdConfig.getLogLevel().equalsIgnoreCase("INFO")) {
-            fancyLogger.setCurrentLevel(LogLevel.valueOf(fdConfig.getLogLevel().toUpperCase()));
+            fancyLogger.setCurrentLevel(LogLevel.valueOf(fdConfig.getLogLevel().toUpperCase(Locale.ROOT)));
         }
 
         FDFeatureFlags.load();
@@ -184,10 +184,10 @@ public class FancyDialogsPlugin extends JavaPlugin implements FancyDialogs {
         }
 
         String version = Bukkit.getMinecraftVersion();
-        if (ServerVersion.getByVersion(version).getProtocolVersion() < ServerVersion.v1_21_6.getProtocolVersion()) {
+        if (ServerVersion.getByVersion(version).getProtocolVersion() < ServerVersion.v1_21_7.getProtocolVersion()) {
             fancyLogger.error("""
                     --------------------------------------------------
-                    FancyDialogs requires Minecraft version 1.21.6 or higher.
+                    FancyDialogs requires Minecraft version 1.21.7 or higher.
                     Your server is running version %s, which is not supported.
                     Please update your server to the latest version.
                     --------------------------------------------------

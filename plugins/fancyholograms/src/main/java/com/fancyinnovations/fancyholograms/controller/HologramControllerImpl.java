@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.time.Duration;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -125,21 +126,24 @@ public class HologramControllerImpl implements HologramController {
             for (final var hologram : FancyHologramsPlugin.get().getRegistry().getAll()) {
                 HologramData data = hologram.getData();
 
+                if (!data.hasChanges()) {
+                    continue;
+                }
+
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    if (data.hasChanges()) {
-                        FoliaSchedulerHelper.playerScheduler(onlinePlayer, () -> {
-                            if (!shouldSeeHologram(hologram, onlinePlayer)) {
-                                return;
-                            }
+                    FoliaSchedulerHelper.playerScheduler(onlinePlayer, () -> {
+                        if (!shouldSeeHologram(hologram, onlinePlayer)) {
+                            return;
+                        }
 
-                            hologram.updateFor(onlinePlayer);
-                            data.setHasChanges(false);
+                        hologram.updateFor(onlinePlayer);
+                    });
+                }
 
-                            if (data instanceof TextHologramData) {
-                                updateTimes.put(hologram.getData().getName(), time);
-                            }
-                        });
-                    }
+                data.setHasChanges(false);
+
+                if (data instanceof TextHologramData) {
+                    updateTimes.put(hologram.getData().getName(), time);
                 }
             }
         }, 50, 1000, TimeUnit.MILLISECONDS);
@@ -219,7 +223,7 @@ public class HologramControllerImpl implements HologramController {
                 if (poseAttr != null) {
                     final var pose = npc.getData().getAttributes().get(poseAttr);
                     if (pose != null) {
-                        switch (pose.toLowerCase()) {
+                        switch (pose.toLowerCase(Locale.ROOT)) {
                             case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
                             case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
                             case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);

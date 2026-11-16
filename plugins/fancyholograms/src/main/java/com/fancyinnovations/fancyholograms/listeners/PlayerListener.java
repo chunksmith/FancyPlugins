@@ -2,6 +2,8 @@ package com.fancyinnovations.fancyholograms.listeners;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -67,6 +69,20 @@ public final class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
+    public void onRespawn(@NotNull final PlayerRespawnEvent event) {
+        FancyHologramsPlugin.get().getHologramThread().schedule(() -> {
+                    for (final var hologram : this.plugin.getRegistry().getAll()) {
+                        hologram.despawnFrom(event.getPlayer());
+                        hologram.removeViewer(event.getPlayer().getUniqueId());
+                        FancyHologramsPlugin.get().getController().refreshHologram(hologram, event.getPlayer());
+                    }
+                },
+                FancyHologramsPlugin.get().getHologramConfiguration().getSpawnDelayOnJoin(),
+                TimeUnit.MILLISECONDS
+        );
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onTeleport(@NotNull final PlayerTeleportEvent event) {
         FancyHologramsPlugin.get().getHologramThread().submit(() -> {
             for (final Hologram hologram : this.plugin.getRegistry().getAll()) {
@@ -111,6 +127,25 @@ public final class PlayerListener implements Listener {
                 });
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerLocaleChange(@NotNull final PlayerLocaleChangeEvent event) {
+        if (!this.plugin.getFHConfiguration().isRefreshHologramsOnLocaleChangeEnabled())
+            return;
+
+        Player player = event.getPlayer();
+
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            if (!player.isOnline())
+                return;
+
+            this.plugin.getHologramThread().submit(() -> {
+                for (final Hologram hologram : this.plugin.getRegistry().getAll()) {
+                    this.plugin.getController().refreshHologram(hologram, player);
+                }
+            });
+        }, 1L);
     }
 
 }

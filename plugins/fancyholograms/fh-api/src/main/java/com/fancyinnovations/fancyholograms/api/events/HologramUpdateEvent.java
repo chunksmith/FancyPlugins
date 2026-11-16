@@ -85,7 +85,10 @@ public final class HologramUpdateEvent extends HologramEvent {
         SHADOW_STRENGTH,
         UPDATE_TEXT_INTERVAL,
         UPDATE_VISIBILITY_DISTANCE,
-        GLOWING;
+        GLOWING,
+        TEXT_OPACITY,
+        ITEM,
+        BLOCK;
     }
 
 }

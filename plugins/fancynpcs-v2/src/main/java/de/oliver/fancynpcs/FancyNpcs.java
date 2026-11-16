@@ -163,13 +163,13 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         String mcVersion = Bukkit.getServer().getMinecraftVersion();
 
         npcAdapter = switch (mcVersion) {
-            case "26.4 Snapshot 1" -> Npc_26_4::new;
+            case "26.4 Snapshot 8" -> Npc_26_4::new;
             case "26.3" -> Npc_26_3::new;
             case "26.2" -> Npc_26_2::new;
             case "26.1.2" -> Npc_26_1_1::new;
             case "1.21.11" -> Npc_1_21_11::new;
             case "1.21.9", "1.21.10" -> Npc_1_21_9::new;
-            case "1.21.6", "1.21.7", "1.21.8" -> Npc_1_21_6::new;
+            case "1.21.7", "1.21.8" -> Npc_1_21_6::new;
             default -> null;
         };
 
@@ -179,10 +179,10 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
                     .withProperty("pluginVersion", getPluginMeta().getVersion())
             );
 
-            fancyLogger.error("Unsupported minecraft server version.");
+            fancyLogger.error("Unsupported Minecraft server version.");
             getLogger().warning("--------------------------------------------------");
-            getLogger().warning("Unsupported minecraft server version.");
-            getLogger().warning("This plugin only supports 1.21.6 - latest");
+            getLogger().warning("Unsupported Minecraft server version.");
+            getLogger().warning("This version of the FancyNpcs plugin does not support this version of Minecraft.");
             getLogger().warning("Disabling the FancyNpcs plugin.");
             getLogger().warning("--------------------------------------------------");
             Bukkit.getPluginManager().disablePlugin(this);
